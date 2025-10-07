@@ -24,7 +24,6 @@ namespace Test.Repositories
         [Fact]
         public async Task AddAsync_ShouldAddProductToDatabase()
         {
-            // Arrange
             var product = new Product
             {
                 Name = "Test Product",
@@ -33,11 +32,9 @@ namespace Test.Repositories
                 CategoryId = 1
             };
 
-            // Act
             await _repository.AddAsync(product);
             await _context.SaveChangesAsync();
 
-            // Assert
             var savedProduct = await _context.Products.FirstOrDefaultAsync(p => p.Name == "Test Product");
             savedProduct.Should().NotBeNull();
             savedProduct!.Name.Should().Be("Test Product");
@@ -49,7 +46,6 @@ namespace Test.Repositories
         [Fact]
         public async Task GetByIdAsync_WithValidId_ShouldReturnProduct()
         {
-            // Arrange
             var product = new Product
             {
                 Name = "Test Product",
@@ -61,10 +57,8 @@ namespace Test.Repositories
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
-            // Act
             var result = await _repository.GetByIdAsync(product.Id);
 
-            // Assert
             result.Should().NotBeNull();
             result!.Name.Should().Be("Test Product");
             result.Description.Should().Be("Test Description");
@@ -74,17 +68,14 @@ namespace Test.Repositories
         [Fact]
         public async Task GetByIdAsync_WithInvalidId_ShouldReturnNull()
         {
-            // Act
             var result = await _repository.GetByIdAsync(999);
 
-            // Assert
             result.Should().BeNull();
         }
 
         [Fact]
         public async Task GetAllAsync_ShouldReturnAllProducts()
         {
-            // Arrange
             var products = new List<Product>
             {
                 new Product { Name = "Product 1", Price = 10.00m, CategoryId = 1 },
@@ -95,10 +86,8 @@ namespace Test.Repositories
             _context.Products.AddRange(products);
             await _context.SaveChangesAsync();
 
-            // Act
             var result = await _repository.GetAllAsync();
 
-            // Assert
             result.Should().HaveCount(3);
             result.Should().Contain(p => p.Name == "Product 1");
             result.Should().Contain(p => p.Name == "Product 2");
@@ -108,7 +97,6 @@ namespace Test.Repositories
         [Fact]
         public async Task GetProductsWithCategoryAsync_ShouldReturnProductsWithCategory()
         {
-            // Arrange
             var category = new Category { Name = "Test Category" };
             _context.Categories.Add(category);
             await _context.SaveChangesAsync();
@@ -124,10 +112,8 @@ namespace Test.Repositories
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
-            // Act
             var result = await _repository.GetProductsWithCategoryAsync();
 
-            // Assert
             result.Should().HaveCount(1);
             var firstProduct = result.First();
             firstProduct.Name.Should().Be("Test Product");
@@ -138,7 +124,6 @@ namespace Test.Repositories
         [Fact]
         public void Update_ShouldUpdateProductInDatabase()
         {
-            // Arrange
             var product = new Product
             {
                 Name = "Original Name",
@@ -149,13 +134,11 @@ namespace Test.Repositories
             _context.Products.Add(product);
             _context.SaveChanges();
 
-            // Act
             product.Name = "Updated Name";
             product.Price = 75.00m;
             _repository.Update(product);
             _context.SaveChanges();
 
-            // Assert
             var updatedProduct = _context.Products.Find(product.Id);
             updatedProduct!.Name.Should().Be("Updated Name");
             updatedProduct.Price.Should().Be(75.00m);
@@ -164,7 +147,6 @@ namespace Test.Repositories
         [Fact]
         public void Remove_ShouldRemoveProductFromDatabase()
         {
-            // Arrange
             var product = new Product
             {
                 Name = "Product to Remove",
@@ -175,11 +157,9 @@ namespace Test.Repositories
             _context.Products.Add(product);
             _context.SaveChanges();
 
-            // Act
             _repository.Remove(product);
             _context.SaveChanges();
 
-            // Assert
             var removedProduct = _context.Products.Find(product.Id);
             removedProduct.Should().BeNull();
         }
