@@ -1,0 +1,9 @@
+﻿global using Microsoft.AspNetCore.Mvc;
+global using ProductCatalog.Application.DTOs;
+global using ProductCatalog.Application.Services;
+global using ProductCatalog.Core.Entities;
+global using ProductCatalog.Core.Interfaces;
+global using ProductCatalog.Infrastructure.Data;
+global using AutoMapper;
+global using FluentValidation;
+global using FluentValidation.AspNetCore;
