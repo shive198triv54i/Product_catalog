@@ -38,8 +38,6 @@ namespace ProductCatalog.Api.Controllers
         {
             var email = User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Email)?.Value;
             var name = User.Claims.FirstOrDefault(c => c.Type == "name")?.Value;
-            //var role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
-
             return Ok(new { email, name });
         }
     }

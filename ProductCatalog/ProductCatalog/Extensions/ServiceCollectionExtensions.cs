@@ -19,22 +19,18 @@ namespace ProductCatalog.Api.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
-            // AutoMapper etc (existing)
             services.AddAutoMapper(cfg =>
             {
                 cfg.AddProfile<ProductProfile>();
                 cfg.AddProfile<CategoryProfile>();
             });
 
-            // Services
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IUserService, UserService>();
 
-            // Auth service
             services.AddScoped<IAuthService, AuthService>();
 
-            // FluentValidation
             services.AddValidatorsFromAssemblyContaining<ProductValidator>();
 
             return services;
@@ -49,7 +45,6 @@ namespace ProductCatalog.Api.Extensions
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            // JWT Auth
             var jwtSettings = configuration.GetSection("JwtSettings");
             var key = jwtSettings.GetValue<string>("Key");
             if (string.IsNullOrEmpty(key))
@@ -64,7 +59,7 @@ namespace ProductCatalog.Api.Extensions
             })
             .AddJwtBearer(options =>
             {
-                options.RequireHttpsMetadata = false; // set true in production
+                options.RequireHttpsMetadata = false;     
                 options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {

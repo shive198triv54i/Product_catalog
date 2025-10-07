@@ -30,7 +30,6 @@ namespace ProductCatalog.Application.Services
             {
                 Name = dto.Name,
                 Email = dto.Email,
-                // Hash password with BCrypt
                 Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
                 Role = "User"
             };
@@ -44,7 +43,6 @@ namespace ProductCatalog.Application.Services
                 Token = token.token,
                 ExpiresAt = token.expiresAt,
                 Email = user.Email,
-                //Role = user.Role
             };
         }
 
@@ -53,7 +51,6 @@ namespace ProductCatalog.Application.Services
             var user = await _uow.Users.GetByEmailAsync(dto.Email);
             if (user == null) throw new KeyNotFoundException("Invalid credentials.");
 
-            // Verify password
             if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
                 throw new KeyNotFoundException("Invalid credentials.");
 
@@ -63,11 +60,9 @@ namespace ProductCatalog.Application.Services
                 Token = token.token,
                 ExpiresAt = token.expiresAt,
                 Email = user.Email,
-                //Role = user.Role
             };
         }
 
-        // returns tuple (token, expiresAt)
         private (string token, DateTime expiresAt) GenerateToken(User user)
         {
             var jwtSettings = _configuration.GetSection("JwtSettings");
@@ -83,7 +78,6 @@ namespace ProductCatalog.Application.Services
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                //new Claim(ClaimTypes.Role, user.Role),
                 new Claim("name", user.Name)
             };
 

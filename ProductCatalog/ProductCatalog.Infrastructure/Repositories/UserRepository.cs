@@ -2,6 +2,7 @@
 using ProductCatalog.Core.Entities;
 using ProductCatalog.Core.Interfaces;
 using ProductCatalog.Infrastructure.Data;
+using System.Threading.Tasks;
 
 namespace ProductCatalog.Infrastructure.Repositories
 {
@@ -16,7 +17,8 @@ namespace ProductCatalog.Infrastructure.Repositories
 
         public async Task<User?> GetByEmailAsync(string email)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            return await _context.Users
+                .FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower());
         }
     }
 }

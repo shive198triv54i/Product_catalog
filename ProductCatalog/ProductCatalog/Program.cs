@@ -27,7 +27,6 @@ namespace ProductCatalog
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Product Catalog API", Version = "v1" });
 
-                // Add JWT Authentication to Swagger UI
                 var jwtSecurityScheme = new OpenApiSecurityScheme
                 {
                     Scheme = "Bearer",
