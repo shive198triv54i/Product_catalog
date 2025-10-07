@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ProductCatalog.Api.Controllers
 {
@@ -13,6 +14,7 @@ namespace ProductCatalog.Api.Controllers
             _productService = productService;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll() => Ok(await _productService.GetAllAsync());
 
